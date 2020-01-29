@@ -11,7 +11,7 @@ import io.restassured.specification.RequestSpecification;
 public class NewAPITest {
 	
 	@Test
-    public void getUserDetailsTest() {
+    public void TC01_getUserDetailsTest() {
         //The base URI to be used
         RestAssured.baseURI = "https://reqres.in/api/users/";
         //Define the specification of request. Server is specified by baseURI above.
@@ -24,7 +24,7 @@ public class NewAPITest {
     }
 	
 	@Test
-    void updateUserDetailsTest() {
+    public void TC02_updateUserDetailsTest() {
         RestAssured.baseURI = "https://reqres.in/api/users/";
         RequestSpecification httpRequest = RestAssured.given();
         JSONObject updateData = new JSONObject();
@@ -40,4 +40,13 @@ public class NewAPITest {
         String name = newData.get("first_name");
         Assert.assertEquals(name, "Aarna");
     }
+	
+	@Test
+	public void TC03_deleteUserTest() {
+	   RestAssured.baseURI = "https://reqres.in/api/users/";
+	   RequestSpecification httpRequest = RestAssured.given();
+	   Response response = httpRequest.request(Method.DELETE, "4");
+	   int statusCode = response.getStatusCode();
+	   Assert.assertEquals(statusCode, 204);
+	}
 }
