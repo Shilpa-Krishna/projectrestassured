@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 
 public class NewAPITest {
@@ -21,6 +22,15 @@ public class NewAPITest {
         //Checks the Status Code
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 200);
+        ResponseBody body = response.getBody();
+        System.out.println(body.asString());
+        
+        JsonPath json = response.jsonPath();
+        //String firstName = jsonPathEvaluator.get("first_name");
+        System.out.println(json.toString());
+        
+     
+        
     }
 	
 	@Test
@@ -49,4 +59,19 @@ public class NewAPITest {
 	   int statusCode = response.getStatusCode();
 	   Assert.assertEquals(statusCode, 204);
 	}
+	
+	@Test
+	public void TC04_CreateEmployee() { 
+	 RestAssured.baseURI ="https://reqres.in/";
+	 RequestSpecification request = RestAssured.given();
+	 
+	 JSONObject requestParams = new JSONObject();
+	 requestParams.put("name", "TestName");
+	 requestParams.put("job", "QA Enginner");
+	 request.body(requestParams.toJSONString());
+	 Response response = request.post("/api/users");
+	 int statusCode = response.getStatusCode();
+	 Assert.assertEquals(statusCode, 201);
+	}
+	
 }
